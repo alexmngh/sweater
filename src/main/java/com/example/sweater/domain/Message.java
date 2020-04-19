@@ -15,6 +15,15 @@ public class Message {
 
     private String tag;
 
+    //т.к. стоит @Entity - то обязательно должен быть пустой конструктор
+    public Message() {
+    }
+
+    public Message(String text, String tag) {
+        this.text = text;
+        this.tag = tag;
+    }
+
     public String getText() {
         return text;
     }
@@ -30,4 +39,5 @@ public class Message {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
 }
