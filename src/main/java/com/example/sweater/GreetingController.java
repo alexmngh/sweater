@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 /* */
@@ -79,7 +80,7 @@ public class GreetingController {
     @PostMapping
     public String add(@RequestParam String text, @RequestParam String tag, Map<String, Object> model){
         log.debug("add ");
-        System.out.println("add");
+        System.out.println("add prnt");
 
         //сохранили
         Message message = new Message(text, tag);
@@ -88,6 +89,13 @@ public class GreetingController {
          Iterable<Message> messages = messageRepo.findAll();
          model.put("messages", messages);
 
+        return "main";
+    }
+
+    @PostMapping
+    public String filter(@RequestParam String text, Map<String, Object> model){
+
+        List<Message> messages = messageRepo.findByTag(text);
         return "main";
     }
 }
