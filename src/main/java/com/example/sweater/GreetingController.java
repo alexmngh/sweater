@@ -5,13 +5,14 @@ import com.example.sweater.repos.MessageRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /* */
 /**
@@ -24,6 +25,7 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class GreetingController {
+    private static final Logger mylogger = LoggerFactory.getLogger(GreetingController.class);
     @Autowired
     private MessageRepo messageRepo;
     /**
@@ -39,13 +41,9 @@ public class GreetingController {
      * @param model куда мы будем складывать данные для пользователя
      * @return возвращает имя файла который хотим оторазить : передаем в этот файл переменную name
      */
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name,
-                           Map<String, Object> model) {
-        log.debug("greeting ");
-
-        model.put("name", name);
-        return "greeting";
+    @GetMapping("/")
+    public String greeting(Map<String, Object> model) {
+        return "tmpgreeting";
     }
     /*верисия для <artifactId>spring-boot-starter-thymeleaf</artifactId>
     @GetMapping("/greeting")
@@ -64,7 +62,7 @@ public class GreetingController {
      */
     @GetMapping
     public String main(Map<String, Object> model){
-        log.debug("main ");
+        mylogger.debug("main ");
         Iterable<Message> messages = messageRepo.findAll();
         model.put("messages", messages);
         return "main";
@@ -92,10 +90,34 @@ public class GreetingController {
         return "main";
     }
 
-    @PostMapping
-    public String filter(@RequestParam String text, Map<String, Object> model){
+    /**
+     * метод -
+     * Аннотация @RequestParam берет значение (в нашем случае из формы main.mustage), а может брать из URL
+     * @param model куда мы будем складывать данные для пользователя
+     * @return возвращает имя файла который хотим отобразить,
+     * т.к. mapping не указываем то это означает, что запросы будут отправлены на туже страницу от куда пришло сообщение
+     */
+    @PostMapping("filter")// из поля name
+    public String filter(@RequestParam String filter, Map<String, Object> model){
+        System.out.println("filter ");
+        mylogger.debug("log dsfdsfs ");
+        log.debug("if true ");
 
-        List<Message> messages = messageRepo.findByTag(text);
+
+
+
+        Iterable<Message> messages;
+        if (filter != null && !filter.isEmpty()){
+            log.debug("if true ");
+            System.out.println("if true ");
+
+            messages = messageRepo.findByTag(filter);
+        }else {
+            System.out.println("if else ");
+
+            messages = messageRepo.findAll();
+        }
+        model.put("messages", messages);
         return "main";
     }
 }
