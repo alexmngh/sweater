@@ -1,4 +1,4 @@
-package com.example.sweater;
+package com.example.sweater.controller;
 
 import com.example.sweater.domain.Message;
 import com.example.sweater.repos.MessageRepo;
@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
  */
 @Slf4j
 @Controller
-public class GreetingController {
-    private static final Logger mylogger = LoggerFactory.getLogger(GreetingController.class);
+public class MainController {
+    private static final Logger mylogger = LoggerFactory.getLogger(MainController.class);
     @Autowired
     private MessageRepo messageRepo;
     /**
@@ -37,7 +37,6 @@ public class GreetingController {
      * Этот параметр не required; если он отсутствует в запросе, то будет использовано defaultValue значение "World".
      * Значение параметра name добавлено в объект Model, что делает его доступным в шаблоне представления.
      * верисия для <artifactId>spring-boot-starter-mustache</artifactId>
-     * @param name имя
      * @param model куда мы будем складывать данные для пользователя
      * @return возвращает имя файла который хотим оторазить : передаем в этот файл переменную name
      */
@@ -77,7 +76,7 @@ public class GreetingController {
      */
     @PostMapping
     public String add(@RequestParam String text, @RequestParam String tag, Map<String, Object> model){
-        log.debug("add ");
+//        log.debug("add ");
         System.out.println("add prnt");
 
         //сохранили
@@ -101,14 +100,11 @@ public class GreetingController {
     public String filter(@RequestParam String filter, Map<String, Object> model){
         System.out.println("filter ");
         mylogger.debug("log dsfdsfs ");
-        log.debug("if true ");
-
-
-
+//        log.debug("if true ");
 
         Iterable<Message> messages;
         if (filter != null && !filter.isEmpty()){
-            log.debug("if true ");
+//            log.debug("if true ");
             System.out.println("if true ");
 
             messages = messageRepo.findByTag(filter);
